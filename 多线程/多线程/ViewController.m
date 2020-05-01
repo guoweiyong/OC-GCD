@@ -44,7 +44,8 @@
     //[self invocationOperation];
     //[self creatOperationQueue];
     //[self operationMain];
-    [self operationRelpOn2];
+    //[self operationRelpOn2];
+    [self operationBarrier];
 }
 
 #pragma mark -- NSOperation
@@ -144,6 +145,30 @@
 
 - (void)invocationOperation1 {
     NSLog(@"任务3=====");
+}
+
+- (void)operationBarrier{
+    NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+    NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"任务一======");
+    }];
+    NSBlockOperation *blockOperation2 = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"任务2-=====");
+    }];
+    NSBlockOperation *blockOperation3 = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"任务3-=====");
+    }];
+    NSBlockOperation *blockOperation4 = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"任务4-=====");
+    }];
+    
+    [operationQueue addOperation:blockOperation];
+    [operationQueue addOperation:blockOperation2];
+    [operationQueue addBarrierBlock:^{
+        NSLog(@"拦截成功-----------");
+    }];
+    [operationQueue addOperation:blockOperation3];
+    [operationQueue addOperation:blockOperation4];
 }
 
 #pragma mark --GCD
